@@ -78,12 +78,12 @@ Os arquivos geralmente são recebidos em varios arquivos separados em UTF-8 com 
 
     $ file *
 
-    1.csv:              Unicode text, UTF-8 (with BOM) text, with very long lines (3099), with CRLF line terminators
-    2.csv:              Unicode text, UTF-8 (with BOM) text, with very long lines (3099), with CRLF line terminators
-    3.csv:              Unicode text, UTF-8 (with BOM) text, with very long lines (3099), with CRLF line terminators
-    4.csv:              Unicode text, UTF-8 (with BOM) text, with very long lines (3099), with CRLF line terminators
-    Desagregadores.csv: Unicode text, UTF-8 (with BOM) text, with CRLF line terminators
-    Indicadores.csv:    Unicode text, UTF-8 (with BOM) text, with very long lines (563), with CRLF, LF line terminators
+        1.csv:              Unicode text, UTF-8 (with BOM) text, with very long lines (3099), with CRLF line terminators
+        2.csv:              Unicode text, UTF-8 (with BOM) text, with very long lines (3099), with CRLF line terminators
+        3.csv:              Unicode text, UTF-8 (with BOM) text, with very long lines (3099), with CRLF line terminators
+        4.csv:              Unicode text, UTF-8 (with BOM) text, with very long lines (3099), with CRLF line terminators
+        Desagregadores.csv: Unicode text, UTF-8 (with BOM) text, with CRLF line terminators
+        Indicadores.csv:    Unicode text, UTF-8 (with BOM) text, with very long lines (563), with CRLF, LF line terminators
 
 
 Rodar o comando `sed`
@@ -95,27 +95,46 @@ Após executar, os arquivos devem ficar:
 
     $ file *
 
-    1.csv:              ASCII text, with very long lines (3099), with CRLF line terminators
-    2.csv:              ASCII text, with very long lines (3099), with CRLF line terminators
-    3.csv:              ASCII text, with very long lines (3099), with CRLF line terminators
-    4.csv:              ASCII text, with very long lines (3099), with CRLF line terminators
-    Desagregadores.csv: Unicode text, UTF-8 text, with CRLF line terminators
-    Indicadores.csv:    Unicode text, UTF-8 text, with very long lines (563), with CRLF, LF line terminators
+        1.csv:              ASCII text, with very long lines (3099), with CRLF line terminators
+        2.csv:              ASCII text, with very long lines (3099), with CRLF line terminators
+        3.csv:              ASCII text, with very long lines (3099), with CRLF line terminators
+        4.csv:              ASCII text, with very long lines (3099), with CRLF line terminators
+        Desagregadores.csv: Unicode text, UTF-8 text, with CRLF line terminators
+        Indicadores.csv:    Unicode text, UTF-8 text, with very long lines (563), with CRLF, LF line terminators
 
 E então juntar o arquivo de dados:
 
-    $ cat 1.csv 2.csv 3.csv 4.csv > dados.csv
-    $ rm 1.csv 2.csv 3.csv 4.csv
-    $ mv Desagregadores.csv desagregadores.csv
-    $ mv Indicadores.csv indicadores.csv
-    $ zip -7 -m -r versao-XXX.zip *
+    cat 1.csv 2.csv 3.csv 4.csv > dados.csv
+    rm 1.csv 2.csv 3.csv 4.csv
+    mv Desagregadores.csv desagregadores.csv
+    mv Indicadores.csv indicadores.csv
+    zip -7 -m -r versao-XXX.zip *
 
 Mover o zip gerado para @omlpi-api / `resources/dataset/` e apontar o link simbólico `latest` para o arquivo novo
 
+    mv $path-da-versao.zip $path-para-o-repo/resources/dataset/
+    cd $path-para-o-repo/resources/dataset/
+    rm latest; ln -s v15.zip latest
+    git add .; git commit -m 'Nova versão';
 
-    $ mv $path-da-versao.zip $path-para-o-repo/resources/dataset/
-    $ cd $path-para-o-repo/resources/dataset/
-    $ rm latest; ln -s v15.zip latest
-    $ git add .; git commit -m 'Nova versão';
+Já no servidor, para importação:
 
+    # docker exec  -it -u app  omlpi_api sh
+
+    $ bash                                            # carrega o bash, isso serve para carregar o arquivo de ~/.bashrc
+                                                      # que então irá carregar as envs para os scripts perl's
+                                                      # via perlbrew/local::lib, equivalente ao "nvm" no caso de node
+    [app@container:/$] cd src/                        # troca o diretório para onde o código da app está montando
+    [app@container:/$] . envfile_local.sh             # carrega as variáveis de ambiente, ou então pode fazer por outro meios
+    [app@container:/$] perl script/import_data.pl     # executa o script de importação
+
+        -- saida esperada do script:
+        [dd/mm/yyyy hh:mm:hh] [pid] [INFO] Starting data import...
+        [dd/mm/yyyy hh:mm:hh] [pid] [INFO] Getting the file checksum
+        [dd/mm/yyyy hh:mm:hh] [pid] [INFO] Dataset checksum: ac03371e254460f2bc96a5f2a6ddf830
+        [dd/mm/yyyy hh:mm:hh] [pid] [INFO] Last checksum: a5fdc2186feeb0ccfbd94bddb83442ea
+        [dd/mm/yyyy hh:mm:hh] [pid] [INFO] New dataset! Let's import data!
+        ...
+
+Caso o script de rollback, ele poderá ser executado novamente, pois as alterações não são persistidas no banco de dados em caso de erro.
 
