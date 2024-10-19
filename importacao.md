@@ -119,14 +119,20 @@ Mover o zip gerado para @omlpi-api / `resources/dataset/` e apontar o link simb�
 
 Já no servidor, para importação:
 
-    # docker exec  -it -u app  omlpi_api sh
 
-    $ bash                                            # carrega o bash, isso serve para carregar o arquivo de ~/.bashrc
-                                                      # que então irá carregar as envs para os scripts perl's
-                                                      # via perlbrew/local::lib, equivalente ao "nvm" no caso de node
-    [app@container:/$] cd src/                        # troca o diretório para onde o código da app está montando
-    [app@container:/$] . envfile_local.sh             # carrega as variáveis de ambiente, ou então pode fazer por outro meios
-    [app@container:/$] perl script/import_data.pl     # executa o script de importação
+O Dockerfile está configurado com o usuário `app`, considerando o arquivo de exemplo, e o nome do container `omlpi_api`
+
+> docker exec -it -u [nome do usuário] [nome do container] [comando]
+
+    # docker exec -it -u app omlpi_api sh         # adicione `sudo` se não estiver de root
+
+
+    $ bash                                        # carrega o bash, isso serve para carregar o arquivo de ~/.bashrc
+                                                  # que então irá carregar as envs para os scripts perl's
+                                                  # via perlbrew/local::lib, equivalente ao "nvm" no caso de node
+    [app@container:/$] cd src/                    # troca o diretório para onde o código da app está montando
+    [app@container:/$] . envfile_local.sh         # carrega as variáveis de ambiente, ou por outros meios
+    [app@container:/$] perl script/import_data.pl # executa o script de importação
 
         -- saida esperada do script:
         [dd/mm/yyyy hh:mm:hh] [pid] [INFO] Starting data import...
@@ -137,4 +143,6 @@ Já no servidor, para importação:
         ...
 
 Caso o script de rollback, ele poderá ser executado novamente, pois as alterações não são persistidas no banco de dados em caso de erro.
+
+    https://docs.google.com/document/d/1V3ZUVqFHRzb9yKoXX13r2SdmNZihArqgiZCmiMhTRe0/edit?usp=sharing
 
