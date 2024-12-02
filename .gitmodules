@@ -1,5 +1,5 @@
 [submodule "omlpi-api"]
-    branch = master
+	branch = master
 	path = omlpi-api
 	url = git@github.com:AppCivico/omlpi-api.git
 [submodule "omlpi-cms-search"]
