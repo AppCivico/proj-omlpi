@@ -7,3 +7,6 @@
 [submodule "omlpi-cms"]
 	path = omlpi-cms
 	url = git@github.com:AppCivico/omlpi-cms.git
+[submodule "omlpi-www/src"]
+	path = omlpi-www/src
+	url = git@github.com:AppCivico/omlpi-www.git
