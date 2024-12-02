@@ -1,0 +1,10 @@
+version: "2"
+services:
+  redoc:
+    image: redocly/redoc
+    name: redoc
+    restart: unless-stopped
+    environment:
+      SPEC_URL: "https://omlpi-api.appcivico.com/openapi.yaml"
+    ports:
+      - "172.17.0.1:4138:80"
