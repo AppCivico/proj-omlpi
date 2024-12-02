@@ -1,9 +1,6 @@
 [submodule "omlpi-api"]
 	path = omlpi-api
 	url = git@github.com:AppCivico/omlpi-api.git
-[submodule "omlpi-www"]
-	path = omlpi-www/src
-	url = git@github.com:AppCivico/omlpi-www.git
 [submodule "omlpi-cms-search"]
 	path = omlpi-cms-search
 	url = git@github.com:AppCivico/omlpi-cms-search.git
