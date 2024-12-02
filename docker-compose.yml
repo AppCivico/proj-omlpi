@@ -1,10 +1,31 @@
-version: "2"
 services:
   redoc:
     image: redocly/redoc
-    name: redoc
+    container_name: redoc
     restart: unless-stopped
     environment:
       SPEC_URL: "https://omlpi-api.appcivico.com/openapi.yaml"
+
+  www:
+    container_name: www
+    build:
+      context: ./omlpi-www
+      dockerfile: Dockerfile
+    networks:
+      - omlpi_network
+    restart: unless-stopped
+    environment:
+      HUGO_VERSION: "${HUGO_VERSION}"
+      SENTRY_AUTH_TOKEN: "${SENTRY_AUTH_TOKEN}"
+
     ports:
-      - "172.17.0.1:4138:80"
+      - "${BIND_INTERFACE}:${SMAE_WWW_LISTEN}:80"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "2"
+        max-size: 1MB
+
+networks:
+  omlpi_network:
+    driver: bridge
