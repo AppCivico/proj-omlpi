@@ -33,7 +33,7 @@ services:
       DATABASE_NAME: "${POSTGRESQL_DBNAME}"
       DATABASE_PASSWORD: "${POSTGRESQL_PASSWORD}"
     volumes:
-      - omlpi-cms:/srv/app/
+      - ./omlpi-cms:/srv/app/
     ports:
       - "172.17.0.1:8080:1337"
     networks:
