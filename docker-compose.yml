@@ -20,8 +20,30 @@ services:
     networks:
       - omlpi_network
 
+  cms_search:
+    container_name: cms_search
+    build:
+      context: ./omlpi-cms-search
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "172.17.0.1:3223:1337"
+    environment:
+      DATABASE_URL: "postgresql://$POSTGRESQL_USER:$POSTGRESQL_PASSWORD@db:5432/$POSTGRESQL_DBNAME"
+
+    networks:
+      - omlpi_network
+
+    depends_on:
+      - db
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "2"
+        max-size: 100MB
+
   api:
-    container_name: "${API_CONTAINER_NAME}"
+    container_name: omlpi_api
     # ver build-container.sh e README.md
     image: appcivico/omlpi_api
     restart: unless-stopped
