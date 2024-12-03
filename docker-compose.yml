@@ -6,6 +6,51 @@ services:
     environment:
       SPEC_URL: "https://omlpi-api.appcivico.com/openapi.yaml"
 
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    container_name: omlpi_pg_db
+    hostname: db
+    environment:
+      POSTGRES_USER: ${POSTGRESQL_USER}
+      POSTGRES_DB: "${POSTGRESQL_DBNAME}"
+      POSTGRES_PASSWORD: "${POSTGRESQL_PASSWORD}"
+    volumes:
+      - ${DATA_PATH}/omlpi_pg_db:/var/lib/postgresql/data
+    networks:
+      - omlpi_network
+
+  api:
+    container_name: "${API_CONTAINER_NAME}"
+    # ver build-container.sh e README.md
+    image: appcivico/omlpi_api
+    restart: unless-stopped
+    ports:
+      - "172.17.0.1:3222:8080"
+    volumes:
+      # mantém o container atualizado com o código fonte, como se fosse PHP
+      - ./omlpi-api:/src
+      - ${DATA_PATH}/api_logs:/data
+    environment:
+      API_PORT: "8080"
+      API_WORKERS: "3"
+      POSTGRESQL_HOST: db
+      POSTGRESQL_PORT: 5432
+      POSTGRESQL_USER: "${POSTGRESQL_USER}"
+      POSTGRESQL_PASSWORD: "${POSTGRESQL_PASSWORD}"
+      POSTGRESQL_DBNAME: "${POSTGRESQL_DBNAME}"
+
+    networks:
+      - omlpi_network
+
+    depends_on:
+      - db
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "2"
+        max-size: 100MB
+
   www:
     container_name: www
     build:

@@ -1,5 +1,5 @@
 const productionDomains = [
-    'tmp--omlpi-www.appcivico.com',
+    'tmp--omlpi.appcivico.com',
 ];
 
 export default {
