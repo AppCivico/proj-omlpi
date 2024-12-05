@@ -5,6 +5,8 @@ services:
     restart: unless-stopped
     environment:
       SPEC_URL: "https://omlpi-api.appcivico.com/openapi.yaml"
+    ports:
+      - "172.17.0.1:2004:80"
 
   db:
     image: postgres:16
