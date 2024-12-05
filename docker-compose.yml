@@ -102,10 +102,6 @@ services:
     networks:
       - omlpi_network
     restart: unless-stopped
-    environment:
-      HUGO_VERSION: "${HUGO_VERSION}"
-      SENTRY_AUTH_TOKEN: "${SENTRY_AUTH_TOKEN}"
-
     ports:
       - "${BIND_INTERFACE}:${SMAE_WWW_LISTEN}:80"
     logging:

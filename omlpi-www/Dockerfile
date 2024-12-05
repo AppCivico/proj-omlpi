@@ -13,7 +13,7 @@ RUN wget https://github.com/gohugoio/hugo/releases/download/v0.119.0/hugo_extend
 COPY src/package*.json ./
 RUN npm install
 COPY src/ .
-COPY ./config.js src/assets/scripts/config.js
+COPY ./config.js assets/scripts/config.js
 
 # algma coisa no build do hugo depende do git e não fica feliz com submodulos
 RUN rm -rf .git && git init . && \
