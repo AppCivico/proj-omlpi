@@ -22,6 +22,20 @@ services:
     networks:
       - omlpi_network
 
+  strapi_db:
+    image: postgres:16
+    restart: unless-stopped
+    container_name: strapi_pg_db
+    hostname: strapi_db
+    environment:
+      POSTGRES_USER: "${STRAPI_POSTGRESQL_USER}"
+      POSTGRES_DB: "${STRAPI_POSTGRESQL_DBNAME}"
+      POSTGRES_PASSWORD: "${STRAPI_POSTGRESQL_PASSWORD}"
+    volumes:
+      - ${DATA_PATH}/strapi_pg_db:/var/lib/postgresql/data
+    networks:
+      - omlpi_network
+
   strapi:
     image: strapi/strapi:3.3.3-node14
     container_name: omlpi_strapi
@@ -29,11 +43,11 @@ services:
     environment:
       ADMIN_JWT_SECRET: "${ADMIN_JWT_SECRET}"
       DATABASE_CLIENT: postgres
-      DATABASE_HOST: db
+      DATABASE_HOST: strapi_db
       DATABASE_PORT: "5432"
-      DATABASE_USERNAME: "${POSTGRESQL_USER}"
-      DATABASE_NAME: "${POSTGRESQL_DBNAME}"
-      DATABASE_PASSWORD: "${POSTGRESQL_PASSWORD}"
+      DATABASE_USERNAME: "${STRAPI_POSTGRESQL_USER}"
+      DATABASE_NAME: "${STRAPI_POSTGRESQL_DBNAME}"
+      DATABASE_PASSWORD: "${STRAPI_POSTGRESQL_PASSWORD}"
     volumes:
       - ${STRAPI_SRC}:/srv/app/
     ports:
