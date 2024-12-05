@@ -5,23 +5,23 @@ const productionDomains = [
 export default {
     api: {
         domain: (productionDomains.indexOf(window.location.hostname) > -1
-            ? 'https://tmp--omlpi-api.appcivico.com/v2/'
+            ? 'http://tmp--omlpi-api.appcivico.com/v2/'
             : ''
         ),
         docs: (productionDomains.indexOf(window.location.hostname) > -1
-            ? 'https://tmp--omlpi-docs.appcivico.com/'
+            ? 'http://tmp--omlpi-docs.appcivico.com/'
             : '/'
         ),
     },
     apiCMS: {
         domain: (productionDomains.indexOf(window.location.hostname) > -1
-            ? 'https://tmp--omlpi-strapi.appcivico.com'
-            : 'http://localhost:1337/'
+            ? 'http://tmp--omlpi-strapi.appcivico.com'
+            : 'http://localhost:1243/'
         ),
     },
     storage: {
         domain: (productionDomains.indexOf(window.location.hostname) > -1
-            ? 'https://tmp--omlpi-strapi.appcivico.com'
+            ? 'http://tmp--omlpi-strapi.appcivico.com'
             : 'https://tmp--omlpi-strapi.appcivico.com'
         ),
     },
