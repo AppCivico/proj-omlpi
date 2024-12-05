@@ -15,14 +15,14 @@ export default {
     },
     apiCMS: {
         domain: (productionDomains.indexOf(window.location.hostname) > -1
-            ? 'http://tmp--omlpi-strapi.appcivico.com'
+            ? 'http://tmp--omlpi-strapi.appcivico.com/'
             : 'http://localhost:1243/'
         ),
     },
     storage: {
         domain: (productionDomains.indexOf(window.location.hostname) > -1
-            ? 'http://tmp--omlpi-strapi.appcivico.com'
-            : 'https://tmp--omlpi-strapi.appcivico.com'
+            ? 'http://tmp--omlpi-strapi.appcivico.com/'
+            : 'https://tmp--omlpi-strapi.appcivico.com/'
         ),
     },
     firstCityId: 5200050,
