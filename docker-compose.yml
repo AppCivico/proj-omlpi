@@ -35,7 +35,7 @@ services:
     volumes:
       - ${STRAPI_SRC}:/srv/app/
     ports:
-      - "172.17.0.1:8080:1337"
+      - "172.17.0.1:2001:1337"
     networks:
       - omlpi_network
 
@@ -46,7 +46,7 @@ services:
       dockerfile: Dockerfile
     restart: unless-stopped
     ports:
-      - "172.17.0.1:3223:1337"
+      - "172.17.0.1:2003:1337"
     environment:
       DATABASE_URL: "postgresql://$POSTGRESQL_USER:$POSTGRESQL_PASSWORD@db:5432/$POSTGRESQL_DBNAME"
 
@@ -67,7 +67,7 @@ services:
     image: appcivico/omlpi_api
     restart: unless-stopped
     ports:
-      - "172.17.0.1:3222:8080"
+      - "172.17.0.1:2002:8080"
     volumes:
       # mantém o container atualizado com o código fonte, como se fosse PHP
       - ./omlpi-api:/src
