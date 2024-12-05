@@ -1,4 +1,4 @@
-FROM node:16-bullseye as build-stage
+FROM node:16-bullseye AS build-stage
 WORKDIR /app
 
 # Install required dependencies
@@ -24,7 +24,7 @@ RUN rm -rf .git && git init . && \
 
 RUN npm run build-ci
 
-FROM nginx:stable-alpine as production-stage
+FROM nginx:stable-alpine AS production-stage
 COPY --from=build-stage /app/public /usr/share/nginx/html
 ADD nginx.conf /etc/nginx/nginx.conf
 EXPOSE 80
